@@ -37,7 +37,7 @@ score_enemy = 0
 
 def choose_card_player():
     if EXTRA_player:
-        choise = input("do you want do pick extra card? (y/n): ")
+        choice = input("do you want do pick extra card? (y/n): ")
         if choice.lower() == "y":
             print("choose the card\t", EXTRA_player)
             print("index of cards\t  1  2  3  4  5")

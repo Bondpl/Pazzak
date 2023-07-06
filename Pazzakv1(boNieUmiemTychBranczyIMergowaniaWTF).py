@@ -38,15 +38,15 @@ score_enemy = 0
 def choose_card_player():
     if EXTRA_player:
         choise = input("do you want do pick extra card? (y/n): ")
-        if choise.lower() == "y":
+        if choice.lower() == "y":
             print("choose the card\t", EXTRA_player)
             print("index of cards\t  1  2  3  4  5")
-            choise = int(input("\nwhat card do you choose "))
+            choice = int(input("\nwhat card do you choose "))
 
-            while choise > len(EXTRA_player) or choise <= 0:
-                choise = int(input("wrong index, choose correct one"))
+            while choice > len(EXTRA_player) or choice <= 0:
+                choice = int(input("wrong index, choose correct one"))
 
-            EXTRA_card = EXTRA_player[choise - 1]
+            EXTRA_card = EXTRA_player[choice - 1]
             DECK_player.append(EXTRA_card)
             EXTRA_player.remove(EXTRA_card)
 
@@ -81,12 +81,12 @@ while not pas and sum(DECK_player) < END and sum(DECK_enemy) < END:
 
     choise = input("1 - hit\t2 - pass\n")
 
-    if choise == "1":
+    if choice == "1":
         choose_card_player()
         if sum(DECK_enemy) < END:
             choose_card_enemy()
 
-    elif choise == "2":
+    elif choice == "2":
         while sum(DECK_enemy) < END and sum(DECK_enemy) < sum(DECK_player):
             choose_card_enemy()
             if sum(DECK_enemy) == END:
@@ -96,7 +96,7 @@ while not pas and sum(DECK_player) < END and sum(DECK_enemy) < END:
                 score_enemy = score_enemy - 1
         pas = True
     else:
-        choise = input("1 - hit\t2 - pass\n")
+        choice = input("1 - hit\t2 - pass\n")
 
     if sum(DECK_player) == END:
         score_player += 1

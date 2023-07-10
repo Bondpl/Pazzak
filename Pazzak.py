@@ -35,12 +35,12 @@ score_player = 0
 score_enemy = 0
 
 
-def choose_card_player():
+def choose_card_player(DECK,DECK_player):
     card_player = random.choice(DECK)
     DECK_player.append(card_player)
     DECK.remove(card_player)
 
-def choose_extra_card():
+def choose_extra_card(DECK,DECK_player,EXTRA_player):
         if EXTRA_player:
             print("twoje karty",EXTRA_player)
             choice = input("do you want do pick extra card? (y/n): ")
@@ -59,12 +59,12 @@ def choose_extra_card():
                 retrun: 0
 
 
-def choose_card_enemy():
+def choose_card_enemy(DECK,DECK_enemy):
     card_enemy = random.choice(DECK)
     DECK_enemy.append(card_enemy)
     DECK.remove(card_enemy)
 
-while score_enemy != 3 and score_player != 3:
+while score_enemy != 3 or score_player != 3:
     DECK = [
         1,
         2,
@@ -82,64 +82,67 @@ while score_enemy != 3 and score_player != 3:
 
     DECK_player = []
     DECK_enemy = []
-    while not pas and sum(DECK_player) < END and sum(DECK_enemy) < END:
+    while not pas or sum(DECK_player) < END and sum(DECK_enemy) < END:
+
         #TAB OF PLAYER
         print("+-------------------------------------------+")
-        print("|  wybrane karty:  ", DECK_player, "\t\t |")
-        print("|  wartosc kart:", sum(DECK_player), "\t\t\t  |")
-        print("|  score:", score_player, "\t\t\t\t  |")
+        print("|  Your cards:       ", DECK_player, "\t|")
+        print("|  Total value:      ", sum(DECK_player), "\t|")
+        print("|  Your score:       ", score_player, "\t|")
         print("+-------------------------------------------+\n")
+
         #TAB OF ENEMY
         print("+-------------------------------------------+")
-        print("|  wybrane karty:  ", DECK_enemy, "\t\t  |")
-        print("|  wartosc kart:", sum(DECK_enemy), "\t\t\t   |")
-        print("|  score:", score_enemy, "\t\t\t\t  |")
+        print("|  Dealer's cards:   ", DECK_enemy, "\t|")
+        print("|  Total value:      ", sum(DECK_enemy), "\t|")
+        print("|  Dealer's score:   ", score_enemy, "\t|")
         print("+-------------------------------------------+")
 
 
         choice = input("1 - hit\t2 - pass\n")
 
         if choice == "1":
-            choose_card_player()
+            choose_card_player(DECK,DECK_player)
             print("+-------------------------------------------+")
-            print("|  wybrane karty:  ", DECK_player, "\t\t|")
-            print("|  wartosc kart:", sum(DECK_player), "\t\t\t  |")
-            print("|  score:", score_player, "\t\t\t\t  |")
+            print("|  Your cards:       ", DECK_player, "\t|")
+            print("|  Total value:      ", sum(DECK_player), "\t|")
+            print("|  Your score:       ", score_player, "\t|")
             print("+-------------------------------------------+\n")
-            choose_extra_card()
+            choose_extra_card(DECK,DECK_player,EXTRA_player)
             if sum(DECK_enemy) < END:
-                choose_card_enemy()
+                choose_card_enemy(DECK,DECK_enemy)
+            elif sum(DECK_enemy) == END:
+                print("krupier spasowal")
 
 
         elif choice == "2":
             while sum(DECK_enemy) < END and sum(DECK_enemy) < sum(DECK_player):
-                choose_card_enemy()
-                if sum(DECK_enemy) == END:
-                    score_enemy = score_enemy + 1
-                    break
-                elif sum(DECK_enemy) > END:
-                    score_enemy = score_enemy - 1
-            pas = True
+                choose_card_enemy(DECK, DECK_enemy)
+            if sum(DECK_enemy) == END:
+                if sum(DECK_enemy) == sum(DECK_player):
+                    print("DRAW!!")
+                else:
+                    print("YOU LOSE!!")
+                score_enemy += 1
+            else:
+                pas = True
         else:
             choice = input("1 - hit\t2 - pass\n")
 
-        # if sum(DECK_player) == END:
-        #     score_player += 1
-        # elif sum(DECK_enemy) == END:
-        #     score_enemy += 1
 
         if sum(DECK_player) > END:
             print("PRZEGRALES!!!")
-            score_enemy = score_enemy + 1
+            score_enemy += 1
         elif sum(DECK_player) == END and sum(DECK_enemy) > END:
+                print("WYGRALES!!!")
+                score_player += 1
+        elif sum(DECK_player) == END and sum(DECK_enemy) < END:
             print("WYGRALES!!!")
-            score_player = score_player + 1
+            score_player += 1
+        elif sum(DECK_player) < END and sum(DECK_enemy) == END:
+            print("PRZEGRALES!!!")
+            score_enemy += 1
         elif sum(DECK_player) == END and sum(DECK_enemy) == END:
             print("REMIS!!!")
 
-        if sum(DECK_enemy) > END:
-            print("PRZEGRALES!!!")
-            score_player = score_player + 1
-        elif sum(DECK_enemy) == END:
-            print("WYGRALES!!!")
-            score_enemy = score_enemy + 1
+
